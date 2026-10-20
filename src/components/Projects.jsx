@@ -19,7 +19,7 @@ const projects = [
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
     technologies: ["React", "Tailwind CSS", "JavaScript"],
     liveUrl:
-      "https://awodeyisamuel015-design.github.io/samthecs/",
+      "https://samthecs-portfolio-4lso.vercel.app/",
     githubUrl: "",
     category: "Personal Portfolio",
     accent: "from-cyan-400 to-blue-500",
@@ -32,7 +32,7 @@ const projects = [
     image:
       "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
     technologies: ["HTML", "CSS", "JavaScript", "Paystack"],
-    liveUrl: "https://awodeyisamuel015-design.github.io/My-hotel/",
+    liveUrl: "https://my-hotel-mauve-eight.vercel.app/",
     githubUrl:
       "",
     category: "Hotel Booking",
@@ -47,7 +47,7 @@ const projects = [
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
     technologies: ["HTML", "CSS", "JavaScript"],
     liveUrl:
-      "https://awodeyisamuel015-design.github.io/realEstate/",
+      "https://real-estate-puce-beta.vercel.app/",
     githubUrl: "",
     category: "Real Estate",
     accent: "from-emerald-400 to-cyan-500",

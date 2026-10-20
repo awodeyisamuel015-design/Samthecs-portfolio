@@ -1,4 +1,4 @@
-
+import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "motion/react";
 
 export default function Hero() {
@@ -66,15 +66,14 @@ export default function Hero() {
 
           {/* Action buttons */}
           <div className="mt-8 flex flex-wrap gap-4">
-            <a
-              href="/projects"
-              className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-500 px-6 py-3.5 font-semibold text-white shadow-lg shadow-blue-600/20 transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 sm:px-7"
-            >
-              View My Projects
-              <span className="text-xl transition-transform duration-300 group-hover:translate-x-1">
-                →
-              </span>
-            </a>
+          <Link to="/projects"
+  className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-500 px-6 py-3.5 font-semibold text-white shadow-lg shadow-blue-600/20 transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 sm:px-7"
+>
+  View My Projects
+  <span className="text-xl transition-transform duration-300 group-hover:translate-x-1">
+    →
+  </span>
+</Link>
 
             <a
               href={`https://wa.me/2349127303047?text=${encodeURIComponent(

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import WelcomeIntro from "./components/WelcomeIntro";
+import MusicPlayer from "./components/MusicPlayer";
 
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -32,8 +33,13 @@ export default function App() {
       {/* Plays once when the app loads */}
       <WelcomeIntro />
 
+      {/* Navigation */}
       <Navbar />
 
+      {/* Background music player stays across all routes */}
+      <MusicPlayer />
+
+      {/* Website pages */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutPage />} />
