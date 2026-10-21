@@ -1,16 +1,23 @@
 
 @import "tailwindcss";
 
-/* Default dark theme */
+/* ========================================
+   SAMTHECS — Forest Green + Cream
+======================================== */
+
 :root {
   font-family: Inter, system-ui, sans-serif;
   color-scheme: dark;
 
-  --page-bg: #050816;
-  --surface-bg: #0b1023;
-  --heading-color: #f8fafc;
-  --body-color: #94a3b8;
-  --border-color: rgba(148, 163, 184, 0.16);
+  /* Dark theme palette */
+  --page-bg: #101713;
+  --surface-bg: #19231c;
+  --heading-color: #f1f0e8;
+  --body-color: #a8b5a8;
+  --border-color: rgba(163, 201, 165, 0.16);
+  --accent-color: #a3c9a5;
+  --accent-hover: #b8d8b9;
+  --accent-text: #101713;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -18,18 +25,27 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Light theme */
+/* ========================================
+   LIGHT THEME
+======================================== */
+
 :root[data-theme="light"] {
   color-scheme: light;
 
-  --page-bg: #f8fafc;
+  --page-bg: #f5f5ee;
   --surface-bg: #ffffff;
-  --heading-color: #0f172a;
-  --body-color: #475569;
-  --border-color: rgba(15, 23, 42, 0.12);
+  --heading-color: #17251a;
+  --body-color: #5e6d60;
+  --border-color: rgba(35, 65, 42, 0.14);
+  --accent-color: #416b49;
+  --accent-hover: #31583a;
+  --accent-text: #ffffff;
 }
 
-/* General styles */
+/* ========================================
+   RESET & GENERAL STYLES
+======================================== */
+
 *,
 *::before,
 *::after {
@@ -48,9 +64,15 @@ body {
   min-height: 100vh;
   background-color: var(--page-bg);
   color: var(--heading-color);
+
   transition:
-    background-color 300ms ease,
-    color 300ms ease;
+    background-color 250ms ease,
+    color 250ms ease;
+}
+
+::selection {
+  background: var(--accent-color);
+  color: var(--accent-text);
 }
 
 a {
@@ -68,20 +90,121 @@ button {
 img {
   display: block;
   max-width: 100%;
+  height: auto;
 }
 
 button:focus-visible,
 a:focus-visible {
-  outline: 2px solid #22d3ee;
+  outline: 2px solid var(--accent-color);
   outline-offset: 4px;
 }
 
-::selection {
-  background: #7c3aed;
-  color: white;
+/* ========================================
+   REUSABLE PORTFOLIO STYLES
+======================================== */
+
+.page-background {
+  background-color: var(--page-bg);
 }
 
-/* Respect reduced-motion preferences */
+.surface {
+  background-color: var(--surface-bg);
+  border: 1px solid var(--border-color);
+}
+
+.text-heading {
+  color: var(--heading-color);
+}
+
+.text-body {
+  color: var(--body-color);
+}
+
+.text-accent {
+  color: var(--accent-color);
+}
+
+.accent-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background-color: var(--accent-color);
+  color: var(--accent-text);
+  font-weight: 600;
+  transition:
+    background-color 200ms ease,
+    transform 200ms ease;
+}
+
+.accent-button:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+}
+
+.outline-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: transparent;
+  color: var(--heading-color);
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease;
+}
+
+.outline-button:hover {
+  border-color: var(--accent-color);
+  background-color: var(--surface-bg);
+}
+
+/* Subtle card hover — no neon glow */
+.portfolio-card {
+  background-color: var(--surface-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  transition:
+    border-color 200ms ease,
+    transform 200ms ease;
+}
+
+.portfolio-card:hover {
+  border-color: var(--accent-color);
+  transform: translateY(-3px);
+}
+
+/* ========================================
+   SCROLLBAR
+======================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--page-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #526b56;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
+
+/* ========================================
+   REDUCED MOTION ACCESSIBILITY
+======================================== */
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -93,5 +216,6 @@ a:focus-visible {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

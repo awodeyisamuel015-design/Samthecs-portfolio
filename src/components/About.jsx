@@ -1,5 +1,6 @@
 
-import { motion } from "motion/react";
+import { Link } from "react-router-dom";
+import { motion, useReducedMotion } from "motion/react";
 import {
   Code2,
   Palette,
@@ -133,7 +134,7 @@ const services = [
 ];
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 25 },
+  hidden: { opacity: 0, y: 22 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -142,6 +143,9 @@ const cardClass =
 
 const mutedText = "text-[var(--body-color)]";
 
+const whatsappLink =
+  "https://wa.me/2349127303047?text=Hello%20SAMTHECS!%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20website%20project.%20Let%27s%20build%20something%20great!";
+
 function SectionHeading({ eyebrow, title, accent, description }) {
   return (
     <motion.div
@@ -149,19 +153,17 @@ function SectionHeading({ eyebrow, title, accent, description }) {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.55 }}
       className="mx-auto mb-12 max-w-3xl text-center"
     >
-      <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-2 text-sm font-medium text-blue-500">
+      <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--border-color)] bg-[var(--surface-bg)] px-4 py-2 text-sm font-medium text-[var(--accent-color)]">
         <Sparkles size={15} />
         {eyebrow}
       </span>
 
       <h2 className="text-3xl font-bold tracking-tight text-[var(--heading-color)] sm:text-4xl lg:text-5xl">
         {title}{" "}
-        <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
-          {accent}
-        </span>
+        <span className="text-[var(--accent-color)]">{accent}</span>
       </h2>
 
       <p className={`mx-auto mt-4 max-w-2xl leading-7 ${mutedText}`}>
@@ -171,46 +173,58 @@ function SectionHeading({ eyebrow, title, accent, description }) {
   );
 }
 
-function IconBox({ icon: Icon, purple = false }) {
+function IconBox({ icon: Icon }) {
   return (
-    <div
-      className={`mb-5 flex h-12 w-12 items-center justify-center rounded-xl ${
-        purple
-          ? "bg-purple-500/10 text-purple-500"
-          : "bg-blue-500/10 text-blue-500"
-      }`}
-    >
+    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border border-[var(--border-color)] bg-[var(--page-bg)] text-[var(--accent-color)]">
       <Icon size={24} />
     </div>
   );
 }
 
+function RevealCard({ children, className = "", delay = 0 }) {
+  const reduceMotion = useReducedMotion();
+
+  return (
+    <motion.div
+      variants={fadeUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{
+        duration: reduceMotion ? 0 : 0.5,
+        delay: reduceMotion ? 0 : delay,
+      }}
+      whileHover={reduceMotion ? undefined : { y: -4 }}
+      className={`${cardClass} ${className}`}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 export default function About() {
-  const whatsappLink =
-    "https://wa.me/2349127303047?text=Hello%20SAMTHECS!%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20website%20project.%20Let%27s%20build%20something%20great!";
+  const reduceMotion = useReducedMotion();
 
   return (
     <main className="min-h-screen overflow-hidden bg-[var(--page-bg)] px-5 pb-20 pt-12 text-[var(--heading-color)] transition-colors duration-300 sm:px-8 lg:px-16">
       <div className="mx-auto max-w-6xl space-y-24 sm:space-y-28">
 
         {/* HERO */}
-        <section className="relative pt-8 sm:pt-14">
-          <div className="pointer-events-none absolute left-1/2 top-0 -z-0 h-72 w-72 -translate-x-1/2 rounded-full bg-blue-600/10 blur-[100px]" />
-
+        <section className="pt-8 sm:pt-14">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={reduceMotion ? false : { opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="relative mx-auto max-w-4xl text-center"
+            transition={{ duration: reduceMotion ? 0 : 0.65 }}
+            className="mx-auto max-w-4xl text-center"
           >
-            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-2 text-sm font-medium text-blue-500">
+            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-[var(--border-color)] bg-[var(--surface-bg)] px-4 py-2 text-sm font-medium text-[var(--accent-color)]">
               <Code2 size={16} />
               THE PERSON BEHIND THE CODE
             </span>
 
-            <h1 className="text-4xl font-black leading-tight tracking-tight text-[var(--heading-color)] sm:text-6xl lg:text-7xl">
+            <h1 className="text-4xl font-black leading-tight tracking-tight sm:text-6xl lg:text-7xl">
               I'm{" "}
-              <span className="bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 bg-clip-text text-transparent">
+              <span className="text-[var(--accent-color)]">
                 SAMTHECS
               </span>
               <br />
@@ -230,20 +244,20 @@ export default function About() {
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-3.5 font-semibold text-white transition duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/20"
+                className="inline-flex items-center gap-2 rounded-lg border border-[var(--accent-color)] bg-[var(--accent-color)] px-6 py-3.5 font-semibold text-[var(--accent-text)] transition duration-200 hover:-translate-y-1 hover:opacity-90"
               >
                 <MessageCircle size={18} />
                 Let's Work Together
                 <ArrowUpRight size={18} />
               </a>
 
-              <a
-                href="/#projects"
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--border-color)] px-6 py-3.5 font-semibold text-[var(--heading-color)] transition hover:border-blue-500 hover:text-blue-500"
+              <Link
+                to="/projects"
+                className="inline-flex items-center gap-2 rounded-lg border border-[var(--border-color)] px-6 py-3.5 font-semibold text-[var(--heading-color)] transition duration-200 hover:-translate-y-1 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]"
               >
                 Explore My Projects
                 <ArrowUpRight size={18} />
-              </a>
+              </Link>
             </div>
           </motion.div>
         </section>
@@ -258,23 +272,14 @@ export default function About() {
           />
 
           <div className="grid items-stretch gap-6 md:grid-cols-2">
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="rounded-3xl border border-[var(--border-color)] bg-[var(--surface-bg)] p-7 transition-colors duration-300 sm:p-10"
-            >
-              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-500/10 text-blue-500">
-                <Terminal size={28} />
-              </div>
+            <RevealCard className="rounded-3xl p-7 sm:p-10">
+              <IconBox icon={Terminal} />
 
-              <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-blue-500">
+              <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-[var(--accent-color)]">
                 Who I Am
               </p>
 
-              <h3 className="mb-5 text-2xl font-bold text-[var(--heading-color)] sm:text-3xl">
+              <h3 className="mb-5 text-2xl font-bold sm:text-3xl">
                 Hello, I'm SAMTHECS.
               </h3>
 
@@ -307,41 +312,33 @@ export default function About() {
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-3 font-semibold text-white transition hover:-translate-y-1"
+                className="mt-8 inline-flex items-center gap-2 rounded-lg bg-[var(--accent-color)] px-6 py-3 font-semibold text-[var(--accent-text)] transition hover:-translate-y-1 hover:opacity-90"
               >
                 Let's Work Together
                 <ArrowUpRight size={18} />
               </a>
-            </motion.div>
+            </RevealCard>
 
             <div className="grid gap-4 sm:grid-cols-2">
               {highlights.map((item, index) => {
                 const Icon = item.icon;
 
                 return (
-                  <motion.div
+                  <RevealCard
                     key={item.title}
-                    variants={fadeUp}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.5,
-                      delay: index * 0.1,
-                    }}
-                    whileHover={{ y: -6 }}
-                    className={`${cardClass} p-6`}
+                    delay={index * 0.07}
+                    className="p-6"
                   >
                     <IconBox icon={Icon} />
 
-                    <h4 className="mb-2 text-lg font-bold text-[var(--heading-color)]">
+                    <h4 className="mb-2 text-lg font-bold">
                       {item.title}
                     </h4>
 
                     <p className={`text-sm leading-6 ${mutedText}`}>
                       {item.description}
                     </p>
-                  </motion.div>
+                  </RevealCard>
                 );
               })}
             </div>
@@ -358,11 +355,15 @@ export default function About() {
           />
 
           <motion.div
-            variants={fadeUp}
+            variants={{
+              hidden: {},
+              visible: {
+                transition: { staggerChildren: reduceMotion ? 0 : 0.06 },
+              },
+            }}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
             className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6"
           >
             {skills.map((skill) => {
@@ -371,15 +372,15 @@ export default function About() {
               return (
                 <motion.div
                   key={skill.name}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                  transition={{ duration: 0.2 }}
+                  variants={fadeUp}
+                  whileHover={reduceMotion ? undefined : { y: -4 }}
                   className={`${cardClass} flex min-h-32 flex-col items-center justify-center gap-4 p-5 text-center`}
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10 text-blue-500">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--page-bg)] text-[var(--accent-color)]">
                     <Icon size={25} />
                   </div>
 
-                  <span className="text-sm font-semibold text-[var(--heading-color)]">
+                  <span className="text-sm font-semibold">
                     {skill.name}
                   </span>
                 </motion.div>
@@ -407,28 +408,23 @@ export default function About() {
               const Icon = service.icon;
 
               return (
-                <motion.div
+                <RevealCard
                   key={service.title}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.08 }}
-                  whileHover={{ y: -6 }}
-                  className={`${cardClass} group p-6 hover:border-blue-500/50`}
+                  delay={index * 0.06}
+                  className="group p-6"
                 >
-                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10 text-blue-500 transition group-hover:bg-blue-500 group-hover:text-white">
+                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--page-bg)] text-[var(--accent-color)] transition-colors duration-200 group-hover:bg-[var(--accent-color)] group-hover:text-[var(--accent-text)]">
                     <Icon size={24} />
                   </div>
 
-                  <h3 className="mb-3 text-lg font-bold text-[var(--heading-color)]">
+                  <h3 className="mb-3 text-lg font-bold">
                     {service.title}
                   </h3>
 
                   <p className={`text-sm leading-7 ${mutedText}`}>
                     {service.description}
                   </p>
-                </motion.div>
+                </RevealCard>
               );
             })}
           </div>
@@ -445,27 +441,23 @@ export default function About() {
 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {process.map((step, index) => (
-              <motion.div
+              <RevealCard
                 key={step.number}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className={`${cardClass} p-6`}
+                delay={index * 0.07}
+                className="p-6"
               >
-                <span className="mb-5 block bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-4xl font-black text-transparent">
+                <span className="mb-5 block text-4xl font-black text-[var(--accent-color)]">
                   {step.number}
                 </span>
 
-                <h3 className="mb-3 text-xl font-bold text-[var(--heading-color)]">
+                <h3 className="mb-3 text-xl font-bold">
                   {step.title}
                 </h3>
 
                 <p className={`text-sm leading-7 ${mutedText}`}>
                   {step.description}
                 </p>
-              </motion.div>
+              </RevealCard>
             ))}
           </div>
         </section>
@@ -484,25 +476,21 @@ export default function About() {
               const Icon = value.icon;
 
               return (
-                <motion.div
+                <RevealCard
                   key={value.title}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className={`${cardClass} p-7`}
+                  delay={index * 0.07}
+                  className="p-7"
                 >
-                  <IconBox icon={Icon} purple />
+                  <IconBox icon={Icon} />
 
-                  <h3 className="mb-3 text-xl font-bold text-[var(--heading-color)]">
+                  <h3 className="mb-3 text-xl font-bold">
                     {value.title}
                   </h3>
 
                   <p className={`leading-7 ${mutedText}`}>
                     {value.description}
                   </p>
-                </motion.div>
+                </RevealCard>
               );
             })}
           </div>
@@ -510,19 +498,19 @@ export default function About() {
 
         {/* MINDSET */}
         <motion.section
-          initial={{ opacity: 0, y: 20 }}
+          initial={reduceMotion ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="rounded-3xl border border-blue-500/20 bg-gradient-to-br from-blue-500/10 via-[var(--surface-bg)] to-purple-500/10 p-8 text-center transition-colors duration-300 sm:p-12"
+          transition={{ duration: reduceMotion ? 0 : 0.55 }}
+          className={`${cardClass} rounded-3xl p-8 text-center sm:p-12`}
         >
-          <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-500/10 text-blue-500">
+          <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--page-bg)] text-[var(--accent-color)]">
             <Zap size={28} />
           </div>
 
-          <h2 className="text-3xl font-black text-[var(--heading-color)] sm:text-4xl">
+          <h2 className="text-3xl font-black sm:text-4xl">
             Learn. Build.{" "}
-            <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+            <span className="text-[var(--accent-color)]">
               Improve. Repeat.
             </span>
           </h2>
@@ -539,9 +527,12 @@ export default function About() {
               (item) => (
                 <span
                   key={item}
-                  className="inline-flex items-center gap-2 rounded-full border border-[var(--border-color)] px-4 py-2 text-sm font-medium text-[var(--heading-color)]"
+                  className="inline-flex items-center gap-2 rounded-full border border-[var(--border-color)] px-4 py-2 text-sm font-medium"
                 >
-                  <CheckCircle2 size={15} className="text-blue-500" />
+                  <CheckCircle2
+                    size={15}
+                    className="text-[var(--accent-color)]"
+                  />
                   {item}
                 </span>
               )
@@ -551,45 +542,40 @@ export default function About() {
 
         {/* FINAL CTA */}
         <motion.section
-          initial={{ opacity: 0, y: 25 }}
+          initial={reduceMotion ? false : { opacity: 0, y: 22 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 to-purple-600 p-8 text-center text-white sm:p-12"
+          transition={{ duration: reduceMotion ? 0 : 0.55 }}
+          className="overflow-hidden rounded-3xl border border-[var(--border-color)] bg-[var(--surface-bg)] p-8 text-center sm:p-12"
         >
-          <div className="pointer-events-none absolute -right-10 -top-20 h-52 w-52 rounded-full border border-white/10" />
-          <div className="pointer-events-none absolute -bottom-28 -left-10 h-64 w-64 rounded-full border border-white/10" />
-
-          <div className="relative z-10">
-            <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 text-white">
-              <BriefcaseBusiness size={28} />
-            </div>
-
-            <h2 className="text-3xl font-black text-white sm:text-4xl">
-              Have an Idea in Mind?
-            </h2>
-
-            <p className="mx-auto mt-4 max-w-2xl leading-7 text-white/80">
-              Whether you need a portfolio, a business website or a fresh
-              digital idea brought to life, let's talk about what you want
-              to build.
-            </p>
-
-            <a
-              href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600 px-7 py-3.5 font-bold text-blue-700 transition duration-300 hover:-translate-y-1 hover:shadow-xl"
-            >
-              <MessageCircle size={19} />
-              Start a Conversation
-              <ArrowUpRight size={18} />
-            </a>
-
-            <p className="mt-5 text-sm text-white/80">
-              SAMTHECS · Building ideas for the web.
-            </p>
+          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--page-bg)] text-[var(--accent-color)]">
+            <BriefcaseBusiness size={28} />
           </div>
+
+          <h2 className="text-3xl font-black sm:text-4xl">
+            Have an Idea in Mind?
+          </h2>
+
+          <p className={`mx-auto mt-4 max-w-2xl leading-7 ${mutedText}`}>
+            Whether you need a portfolio, a business website or a fresh
+            digital idea brought to life, let's talk about what you want
+            to build.
+          </p>
+
+          <a
+            href={whatsappLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 inline-flex items-center gap-2 rounded-lg border border-[var(--accent-color)] bg-[var(--accent-color)] px-7 py-3.5 font-bold text-[var(--accent-text)] transition duration-200 hover:-translate-y-1 hover:opacity-90"
+          >
+            <MessageCircle size={19} />
+            Start a Conversation
+            <ArrowUpRight size={18} />
+          </a>
+
+          <p className={`mt-5 text-sm ${mutedText}`}>
+            SAMTHECS · Building ideas for the web.
+          </p>
         </motion.section>
 
       </div>

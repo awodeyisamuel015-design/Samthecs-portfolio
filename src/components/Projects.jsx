@@ -5,10 +5,8 @@ import {
   Code2,
   ExternalLink,
   FolderGit2,
-  Plus,
 } from "lucide-react";
 
-// LIVE WEBSITE SCREENSHOTS
 const projects = [
   {
     id: 1,
@@ -18,11 +16,9 @@ const projects = [
     image:
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
     technologies: ["React", "Tailwind CSS", "JavaScript"],
-    liveUrl:
-      "https://samthecs-portfolio-4lso.vercel.app/",
+    liveUrl: "https://samthecs-portfolio-4lso.vercel.app/",
     githubUrl: "",
     category: "Personal Portfolio",
-    accent: "from-cyan-400 to-blue-500",
   },
   {
     id: 2,
@@ -33,10 +29,8 @@ const projects = [
       "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
     technologies: ["HTML", "CSS", "JavaScript", "Paystack"],
     liveUrl: "https://my-hotel-mauve-eight.vercel.app/",
-    githubUrl:
-      "",
+    githubUrl: "",
     category: "Hotel Booking",
-    accent: "from-purple-400 to-pink-500",
   },
   {
     id: 3,
@@ -46,39 +40,52 @@ const projects = [
     image:
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
     technologies: ["HTML", "CSS", "JavaScript"],
-    liveUrl:
-      "https://real-estate-puce-beta.vercel.app/",
+    liveUrl: "https://real-estate-puce-beta.vercel.app/",
     githubUrl: "",
     category: "Real Estate",
-    accent: "from-emerald-400 to-cyan-500",
   },
 ];
+
+function Reveal({ children, className = "", delay = 0 }) {
+  const reduceMotion = useReducedMotion();
+
+  return (
+    <motion.div
+      initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{
+        duration: reduceMotion ? 0 : 0.6,
+        delay: reduceMotion ? 0 : delay,
+      }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 export default function Projects() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <main className="relative isolate min-h-screen overflow-hidden bg-[var(--page-bg)] px-5 pb-20 pt-28 text-[var(--heading-color)] transition-colors duration-300 sm:px-8 sm:pt-32 lg:px-12 lg:pb-28">
-      {/* BACKGROUND GLOW */}
-      <div className="pointer-events-none absolute left-1/4 top-40 -z-10 h-80 w-80 rounded-full bg-blue-600/10 blur-[120px]" />
-      <div className="pointer-events-none absolute right-0 top-1/2 -z-10 h-80 w-80 rounded-full bg-purple-600/10 blur-[120px]" />
-
+    <main className="min-h-screen overflow-hidden bg-[var(--page-bg)] px-5 pb-20 pt-28 text-[var(--heading-color)] transition-colors duration-300 sm:px-8 sm:pt-32 lg:px-12 lg:pb-28">
       <div className="mx-auto max-w-7xl">
         {/* PAGE HEADING */}
         <motion.header
-          initial={reduceMotion ? false : { opacity: 0, y: 25 }}
+          initial={reduceMotion ? false : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.65 }}
           className="mx-auto mb-16 max-w-3xl text-center"
         >
-          <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-[var(--border-color)] bg-[var(--surface-bg)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-cyan-500">
+          <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-[var(--border-color)] bg-[var(--surface-bg)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--accent-color)]">
             <FolderGit2 size={15} />
             My Portfolio
           </span>
 
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-7xl">
             Featured{" "}
-            <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
+            <span className="text-[var(--accent-color)]">
               Projects.
             </span>
           </h1>
@@ -112,68 +119,56 @@ export default function Projects() {
             <motion.article
               key={project.id}
               initial={
-                reduceMotion ? false : { opacity: 0, y: 30 }
+                reduceMotion ? false : { opacity: 0, y: 24 }
               }
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{
-                duration: 0.55,
-                delay: reduceMotion ? 0 : index * 0.12,
+                duration: reduceMotion ? 0 : 0.55,
+                delay: reduceMotion ? 0 : index * 0.1,
               }}
-              className="group relative overflow-hidden rounded-3xl border border-[var(--border-color)] bg-[var(--surface-bg)] transition duration-300 hover:-translate-y-2 hover:border-cyan-400/40 hover:shadow-2xl hover:shadow-blue-500/10"
+              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border-color)] bg-[var(--surface-bg)] transition duration-300 hover:-translate-y-1 hover:border-[var(--accent-color)]"
             >
-              {/* TOP ACCENT */}
-              <div
-                className={`h-1 bg-gradient-to-r ${project.accent}`}
-              />
-
-              {/* LIVE SCREENSHOT */}
+              {/* PROJECT IMAGE */}
               <a
-                href={project.liveUrl || project.githubUrl}
+                href={project.liveUrl || project.githubUrl || undefined}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Open ${project.title}`}
-                className="relative flex aspect-[16/10] items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-[#10162c] to-purple-950"
+                className="relative block aspect-[16/10] overflow-hidden bg-[var(--page-bg)]"
               >
                 <img
                   src={project.image}
                   alt={`${project.title} website preview`}
                   loading="lazy"
                   referrerPolicy="no-referrer"
-                  className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                   onError={(event) => {
-                    event.currentTarget.style.display = "none";
+                    event.currentTarget.style.visibility = "hidden";
                   }}
                 />
 
-                <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                  <div className="absolute h-40 w-40 rounded-full bg-blue-500/20 blur-3xl" />
-                  <FolderGit2
-                    size={48}
-                    strokeWidth={1}
-                    className="text-cyan-300/80"
-                  />
-                </div>
+                <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/25" />
 
-                <span className="absolute bottom-4 left-4 rounded-full border border-white/10 bg-black/60 px-3 py-1.5 text-xs text-white backdrop-blur-md">
+                <span className="absolute bottom-4 left-4 rounded-full border border-white/20 bg-black/60 px-3 py-1.5 text-xs font-medium text-white">
                   {project.category}
                 </span>
 
-                <span className="absolute right-4 top-4 rounded-full bg-black/60 p-2 text-white opacity-0 transition group-hover:opacity-100">
-                  <ExternalLink size={18} />
+                <span className="absolute right-4 top-4 rounded-full border border-white/20 bg-black/60 p-2 text-white transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                  <ExternalLink size={17} />
                 </span>
               </a>
 
               {/* PROJECT DETAILS */}
-              <div className="p-6 sm:p-7">
+              <div className="flex flex-1 flex-col p-6 sm:p-7">
                 <div className="flex items-start justify-between gap-3">
-                  <h3 className="text-xl font-bold transition-colors group-hover:text-cyan-400">
+                  <h3 className="text-xl font-bold transition-colors duration-200 group-hover:text-[var(--accent-color)]">
                     {project.title}
                   </h3>
 
                   <ArrowUpRight
                     size={21}
-                    className="shrink-0 text-[var(--body-color)] transition duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-cyan-400"
+                    className="shrink-0 text-[var(--body-color)] transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[var(--accent-color)]"
                   />
                 </div>
 
@@ -193,14 +188,14 @@ export default function Projects() {
                   ))}
                 </div>
 
-                {/* WORKING PROJECT LINKS */}
-                <div className="mt-7 flex flex-wrap gap-3 border-t border-[var(--border-color)] pt-5">
+                {/* PROJECT LINKS */}
+                <div className="mt-auto flex flex-wrap gap-3 border-t border-[var(--border-color)] pt-5 mt-7">
                   {project.liveUrl && (
                     <a
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-3 text-sm font-semibold text-white transition hover:brightness-110"
+                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-[var(--accent-color)] px-4 py-3 text-sm font-semibold text-[var(--accent-text)] transition-colors hover:bg-[var(--accent-hover)]"
                     >
                       <ExternalLink size={16} />
                       Live Demo
@@ -212,7 +207,7 @@ export default function Projects() {
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-[var(--border-color)] px-4 py-3 text-sm font-semibold transition hover:border-cyan-400/50 hover:text-cyan-400"
+                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-[var(--border-color)] px-4 py-3 text-sm font-semibold transition-colors hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]"
                     >
                       <Code2 size={17} />
                       Source Code
@@ -225,32 +220,32 @@ export default function Projects() {
         </div>
 
         {/* CLOSING SECTION */}
-        <motion.div
-          initial={reduceMotion ? false : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mt-16 rounded-3xl border border-[var(--border-color)] bg-[var(--surface-bg)] p-8 text-center sm:p-12"
-        >
-          <h2 className="text-2xl font-extrabold sm:text-3xl">
-            Have a project in mind?
-          </h2>
+        <Reveal className="mt-16">
+          <div className="rounded-2xl border border-[var(--border-color)] bg-[var(--surface-bg)] p-8 text-center sm:p-12">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent-color)]">
+              Have an idea?
+            </p>
 
-          <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-[var(--body-color)] sm:text-base">
-            Let&apos;s work together to turn your idea into a
-            beautiful digital experience.
-          </p>
+            <h2 className="text-2xl font-extrabold sm:text-3xl">
+              Have a project in mind?
+            </h2>
 
-          <a
-            href="https://wa.me/2349127303047?text=Hello%20SAMTHECS!%20I%20have%20a%20project%20in%20mind."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-7 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 px-6 py-3.5 text-sm font-bold text-white transition hover:scale-105"
-          >
-            Let&apos;s Talk
-            <ArrowUpRight size={18} />
-          </a>
-        </motion.div>
+            <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-[var(--body-color)] sm:text-base">
+              Let&apos;s work together to turn your idea into a
+              beautiful digital experience.
+            </p>
+
+            <a
+              href="https://wa.me/2349127303047?text=Hello%20SAMTHECS!%20I%20have%20a%20project%20in%20mind."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-7 inline-flex items-center gap-2 rounded-lg bg-[var(--accent-color)] px-6 py-3.5 text-sm font-bold text-[var(--accent-text)] transition duration-200 hover:-translate-y-0.5 hover:bg-[var(--accent-hover)]"
+            >
+              Let&apos;s Talk
+              <ArrowUpRight size={18} />
+            </a>
+          </div>
+        </Reveal>
       </div>
     </main>
   );

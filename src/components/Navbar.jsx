@@ -1,14 +1,6 @@
-
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {
-  ArrowRight,
-  Menu,
-  X,
-  Sun,
-  Moon,
-  Code2,
-} from "lucide-react";
+import { Menu, X, Sun, Moon, ArrowRight } from "lucide-react";
 
 const links = [
   { name: "Home", href: "/" },
@@ -19,148 +11,88 @@ const links = [
 ];
 
 const whatsappLink =
-  "https://wa.me/2349127303047?text=Hello%20SAMTHECS!%20%F0%9F%91%8B%20I%20visited%20your%20portfolio%20and%20I%E2%80%99m%20interested%20in%20working%20with%20you.%20Let%E2%80%99s%20discuss%20my%20project!";
+  "https://wa.me/2349127303047?text=Hello%20SAMTHECS!%20I%20want%20to%20discuss%20a%20project.";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState("dark");
 
   const location = useLocation();
-  const navigate = useNavigate();
+  const isDark = theme === "dark";
 
-  // RESTORE SAVED THEME
   useEffect(() => {
-    const savedTheme = localStorage.getItem("samthecs-theme");
-    const initialTheme = savedTheme === "light" ? "light" : "dark";
+    const saved = localStorage.getItem("samthecs-theme");
+    const initial = saved === "light" ? "light" : "dark";
 
-    setTheme(initialTheme);
-    document.documentElement.dataset.theme = initialTheme;
-    document.documentElement.style.colorScheme = initialTheme;
+    setTheme(initial);
+    document.documentElement.dataset.theme = initial;
+    document.documentElement.style.colorScheme = initial;
   }, []);
 
-  // CLOSE MENU AND HANDLE PAGE SCROLLING
   useEffect(() => {
     setOpen(false);
 
-    if (location.pathname === "/" && location.hash) {
+    if (location.hash && location.pathname === "/") {
       requestAnimationFrame(() => {
         document
           .getElementById(location.hash.slice(1))
-          ?.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
+          ?.scrollIntoView({ behavior: "smooth" });
       });
     } else if (!location.hash) {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [location.pathname, location.hash]);
 
-  // DARK / LIGHT THEME
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, []);
+
   const toggleTheme = () => {
-    const nextTheme = theme === "dark" ? "light" : "dark";
+    const next = isDark ? "light" : "dark";
 
-    setTheme(nextTheme);
-    document.documentElement.dataset.theme = nextTheme;
-    document.documentElement.style.colorScheme = nextTheme;
-    localStorage.setItem("samthecs-theme", nextTheme);
+    setTheme(next);
+    document.documentElement.dataset.theme = next;
+    document.documentElement.style.colorScheme = next;
+    localStorage.setItem("samthecs-theme", next);
   };
 
-  const closeMenu = () => setOpen(false);
-  const isDark = theme === "dark";
+  const iconButton =
+    "flex h-10 w-10 shrink-0 items-center justify-center rounded-full " +
+    "border border-[var(--border-color)] bg-[var(--surface-bg)] " +
+    "text-[var(--heading-color)]";
 
-  const navBg = isDark
-    ? "border-white/[0.08] bg-[#070914]/85"
-    : "border-slate-200 bg-white/90";
-
-  const linkColor = isDark
-    ? "text-slate-300 hover:text-cyan-300"
-    : "text-slate-600 hover:text-blue-600";
-
-  const iconButton = isDark
-    ? "border-white/10 bg-white/[0.04] text-slate-200 hover:border-purple-400/50 hover:bg-purple-500/10"
-    : "border-slate-200 bg-slate-100 text-slate-700 hover:border-blue-400 hover:bg-blue-50";
-
-  const mobileBg = isDark
-    ? "border-white/10 bg-[#090d1c]"
-    : "border-slate-200 bg-white";
-
-  const navLinkClass = `relative py-2 text-sm font-medium transition-colors duration-200 ${linkColor} after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:rounded-full after:bg-gradient-to-r after:from-cyan-400 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full`;
-
-  // NAVIGATION HANDLER
-  const handleNavigation = (href) => {
-    closeMenu();
-
-    if (href.includes("#")) {
-      navigate(href);
-      return;
-    }
-
-    if (href === location.pathname) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
-  // ACTIVE NAVIGATION LINK
-  const isActive = (href) => {
-    if (href.includes("#")) {
-      const [pathname, hash] = href.split("#");
-
-      return (
-        location.pathname === pathname &&
-        location.hash === `#${hash}`
-      );
-    }
-
-    return location.pathname === href && !location.hash;
-  };
+  const active = (href) => location.pathname === href;
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 border-b backdrop-blur-2xl transition-colors duration-300 ${navBg}`}
-    >
+    <header className="fixed inset-x-0 top-0 z-50 w-full border-b border-[var(--border-color)] bg-[var(--nav-bg)] backdrop-blur-xl">
       <nav
-        className="mx-auto flex h-[76px] max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-12"
         aria-label="Main navigation"
+        className="mx-auto flex h-[68px] w-full max-w-[1440px] items-center justify-between gap-2 px-3 sm:h-[72px] sm:px-5 md:px-8 lg:px-10"
       >
-        {/* BRAND */}
-        <Link
-          to="/"
-          onClick={() => {
-            closeMenu();
-
-            if (location.pathname === "/" && !location.hash) {
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }
-          }}
-          className="group flex shrink-0 items-center gap-2.5"
-          aria-label="SAMTHECS home"
-        >
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600 shadow-lg shadow-blue-500/20 transition duration-300 group-hover:-rotate-6 group-hover:scale-105">
-            <Code2 size={23} className="text-white" />
-          </span>
-
-          <span
-            className={`text-base font-black tracking-[0.18em] sm:text-lg ${
-              isDark ? "text-white" : "text-slate-900"
-            }`}
-          >
-            SAMTHECS<span className="text-cyan-500">.</span>
-          </span>
+        {/* LOGO */}
+        <Link to="/" onClick={() => setOpen(false)} className="min-w-0 shrink">
+          <img
+            src="/images/samthecs-logo.png"
+            alt="SAMTHECS"
+            className="block h-9 w-25 max-w-[105px] object-contain sm:h-11 sm:max-w-[145px] lg:h-12 lg:max-w-[165px]"
+          />
         </Link>
 
         {/* DESKTOP LINKS */}
-        <div className="hidden items-center gap-7 lg:flex xl:gap-9">
+        <div className="hidden items-center gap-4 xl:flex 2xl:gap-6">
           {links.map((link) => (
             <Link
               key={link.name}
               to={link.href}
-              onClick={() => handleNavigation(link.href)}
-              aria-current={isActive(link.href) ? "page" : undefined}
-              className={`${navLinkClass} ${
-                isActive(link.href)
-                  ? "!text-cyan-400 after:!w-full"
-                  : ""
+              className={`whitespace-nowrap text-sm transition-colors hover:text-[var(--accent-color)] ${
+                active(link.href)
+                  ? "font-semibold text-[var(--accent-color)]"
+                  : "text-[var(--body-color)]"
               }`}
             >
               {link.name}
@@ -169,40 +101,31 @@ export default function Navbar() {
         </div>
 
         {/* ACTIONS */}
-        <div className="flex items-center gap-3">
-          {/* THEME TOGGLE */}
+        <div className="flex shrink-0 items-center gap-2">
           <button
             type="button"
             onClick={toggleTheme}
             aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
-            title={`Switch to ${isDark ? "light" : "dark"} mode`}
-            className={`flex h-10 w-10 items-center justify-center rounded-full border transition duration-300 hover:rotate-6 hover:scale-105 ${iconButton}`}
+            className={iconButton}
           >
-            {isDark ? <Sun size={19} /> : <Moon size={19} />}
+            {isDark ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
-          {/* DESKTOP WHATSAPP */}
           <a
             href={whatsappLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="group hidden items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-purple-500/10 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/30 sm:inline-flex"
+            className="hidden items-center gap-2 rounded-lg bg-[var(--accent-color)] px-4 py-3 text-sm font-semibold text-[var(--accent-text)] xl:inline-flex"
           >
-            Let's Talk
-            <ArrowRight
-              size={16}
-              className="transition-transform duration-300 group-hover:translate-x-1"
-            />
+            Let's Talk <ArrowRight size={16} />
           </a>
 
-          {/* MOBILE MENU BUTTON */}
           <button
             type="button"
             onClick={() => setOpen(!open)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            aria-controls="mobile-navigation"
-            className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-200 lg:hidden ${iconButton}`}
+            className={`xl:hidden ${iconButton}`}
           >
             {open ? <X size={21} /> : <Menu size={21} />}
           </button>
@@ -210,57 +133,40 @@ export default function Navbar() {
       </nav>
 
       {/* MOBILE MENU */}
-      <div
-        id="mobile-navigation"
-        className={`grid overflow-hidden transition-[grid-template-rows,opacity] duration-300 lg:hidden ${
-          open
-            ? "grid-rows-[1fr] opacity-100"
-            : "grid-rows-[0fr] opacity-0"
-        }`}
-        aria-hidden={!open}
-        inert={!open}
-      >
-        <div className="min-h-0 overflow-hidden">
-          <div className={`border-t px-5 pb-5 pt-3 sm:px-8 ${mobileBg}`}>
+      {open && (
+        <div className="max-h-[calc(100dvh-68px)] w-full overflow-y-auto border-t border-[var(--border-color)] bg-[var(--surface-bg)] px-4 pb-5 sm:px-6 xl:hidden">
+          <div className="mx-auto w-full max-w-lg">
             {links.map((link) => (
               <Link
                 key={link.name}
                 to={link.href}
-                tabIndex={open ? 0 : -1}
-                onClick={() => handleNavigation(link.href)}
-                aria-current={isActive(link.href) ? "page" : undefined}
-                className={`block border-b py-3.5 text-sm font-medium transition-colors last:border-b-0 ${
-                  isDark
-                    ? "border-white/[0.06]"
-                    : "border-slate-100"
-                } ${
-                  isActive(link.href)
-                    ? "text-cyan-400"
-                    : linkColor
+                onClick={() => setOpen(false)}
+                className={`flex min-h-12 items-center justify-between border-b border-[var(--border-color)] py-3 text-sm ${
+                  active(link.href)
+                    ? "font-semibold text-[var(--accent-color)]"
+                    : "text-[var(--body-color)]"
                 }`}
               >
                 {link.name}
               </Link>
             ))}
 
-            {/* MOBILE WHATSAPP */}
             <a
               href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={closeMenu}
-              tabIndex={open ? 0 : -1}
-              className="group mt-4 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 px-5 py-3.5 text-sm font-semibold text-white transition hover:brightness-110"
+              onClick={() => setOpen(false)}
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--accent-color)] px-4 py-3 text-sm font-semibold text-[var(--accent-text)]"
             >
-              Let's Talk
-              <ArrowRight
-                size={17}
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              />
+              Let's Talk <ArrowRight size={16} />
             </a>
+
+            <p className="mt-4 text-center text-xs text-[var(--body-color)]">
+              SAMTHECS · Digital Creator
+            </p>
           </div>
         </div>
-      </div>
+      )}
     </header>
   );
 }
